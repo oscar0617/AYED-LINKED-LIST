@@ -109,21 +109,29 @@ class LinkedList:
         else:
             raise Exception("Element not found.")
 
-    def deleteStack(self, value):
-        value_node = self.search(value)
-        if value_node is not None:
-            if len(self) == 1:  # Soy el único
-                self.head, self.tail = None, None
-            else:
-                prev = self.head
-                while prev.getNext() != value_node and prev.getNext() == None:
-                    prev = prev.getNext()
-                if value_node == self.getTail():
-                    self.setTail(prev)
-            value_node.clear()
+    def pop(self):
+        element = self.getTail()
+        value = self.getTail().getValue()
+        prev = self.getHead()
+        if prev == element:
             self.len -= 1
-        else:
-            raise Exception("Element not found.")
+            return prev.getValue()
+        while prev.getNext() != element:
+            prev = prev.getNext()
+        self.setTail(prev)
+        self.len -= 1
+        return value
+        
+    def reverse(self):
+        aux = LinkedList()
+        while len(self) >= 1:
+            aux.append(self.getTail().getValue())
+            self.pop()
+        return aux
+
+    def __str__(self):
+        return str(self.getHead())
+
 #FIFO
 class Queue:
     def __init__(self):
@@ -161,6 +169,7 @@ class Stack:
 
     def __str__(self):
         return "Stack("+str(self.data.getHead())+")"
+
     def __len__(self):
         return len(self.data)
 
@@ -181,5 +190,8 @@ def main():
     cabeza = list.pop()
     print(cabeza)
     print(list)
+    lista = LinkedList([1,2,3,5,1,7,4,3])
+    listareversed = lista.reverse()
+    print(listareversed)
 
 main()
